@@ -1,11 +1,11 @@
 // jshint esversion:6
 class Grid {
-    constructor(wdth = 100,hght = 200, cols=5, rows=5) {
+    constructor(wdth = 100, hght = 200, cols = 5, rows = 5) {
         this.width = wdth;
         this.cols = cols;
         this.rows = rows;
-        this.height = hght;  
-        this.type = null;
+        this.height = hght;
+        this.type = "blank";
         this.red = 0;
         this.yellow = 0;
         this.blue = 0;
@@ -23,6 +23,9 @@ class Grid {
         let cellWidth = this.width / this.cols / 2;
         let cellHeight = this.height / this.rows / 2;
         
+        console.log(JSON.stringify(this.grid[a][b]) + rval);
+
+      
         console.log("building...");
         fill(rval);
         stroke("black");
@@ -36,28 +39,39 @@ class Grid {
             ellipse(this.grid[a][b].locx + cellWidth, this.grid[a][b].locy + cellHeight, 20, 20);
         }, 3000);
 
+        //}
      
 
     }
 
 
     build(a, b, rval) {
-        if(!this.grid[a][b].build || rval == 255) {
+        if (!this.grid[a][b].build || rval == 255) {
            
             
             //ellipse(this.grid[a][b].locx + cellWidth, this.grid[a][b].locy + cellHeight, 20, 20);
+
+            //  if (this.grid[a][b].type != undefined) {
+            //   }
+          //  if (this.grid[a][b].type !== "" && rval !== 255) {
+
             if (rval == 255) {
-                this.grid[a][b].build = false;
-                this[this.grid[a][b].type]--;
-                console.log(`BULLDOZED type: ${this.grid[a][b].type} ${this[this.grid[a][b].type]}`);
-                this.grid[a][b].type = null;
-            } else {
-                this.grid[a][b].build = true;
-                this.grid[a][b].type = rval;
-                this[rval]++; //increment counter of property type.
-                console.log(`BUILT type: ${rval} ${this[rval]}`);
-            }
+                    if (this.grid[a][b].build) {
+                        this.grid[a][b].build = false;
+                        this[this.grid[a][b].type]--;
+                        console.log(`BULLDOZED type: ${this.grid[a][b].type} ${this[this.grid[a][b].type]}`);
+                        this.grid[a][b].type = "";
+                    }
+                } else {
+                    this.grid[a][b].build = true;
+                    this.grid[a][b].type = rval;
+                    this[rval]++; //increment counter of property type.
+                    console.log(`BUILT type: ${rval} ${this[rval]}`);
+                }
+            
             this.buildAnim(a, b, rval);
+                
+       //     }
             // console.log("clicked:", this.grid[a][b].locx, this.grid[a][b].locy, "[" + a + "]", "[" + b + "]" + rval);
         }
     }
@@ -104,8 +118,8 @@ class Grid {
             for (let b = 0; b < this.grid[a].length; b++) {
           
                 if (x > this.grid[a][b].locx && x < this.grid[a][b].locx + (this.width / this.cols)) {
-                    if (y > this.grid[a][b].locy && y < this.grid[a][b].locy + (this.height / this.rows) ) {
-                        console.log("clicked:", this.grid[a][b].locx, this.grid[a][b].locy, "[" + a + "]", "[" + b + "]" + rval);
+                    if (y > this.grid[a][b].locy && y < this.grid[a][b].locy + (this.height / this.rows)) {
+                        console.log(`clicked: ${this.grid[a][b].locx}, ${this.grid[a][b].locy}, [ ${a} ], [ ${b} ] ${rval}`);
                      
                         //stroke(rval);
                       
