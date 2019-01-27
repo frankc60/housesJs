@@ -4,9 +4,6 @@ let grid;
 let radio;
 let div1;
 
-
-
-
 function setup() {
     createCanvas(700,700); 
     background(0);

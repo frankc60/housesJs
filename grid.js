@@ -6,31 +6,58 @@ class Grid {
         this.rows = rows;
         this.height = hght;  
         this.type = null;
-         
+        this.red = 0;
+        this.yellow = 0;
+        this.blue = 0;
+        this.color;
+
         console.log(`GRID constructor
         width: ${this.width}
         height: ${this.height}
         cols: ${this.cols}
         rows: ${this.rows}`);
-
-
-
-    
+   
     }
+
+    async buildAnim(a, b, rval) {
+        let cellWidth = this.width / this.cols / 2;
+        let cellHeight = this.height / this.rows / 2;
+        
+        console.log("building...");
+        fill(rval);
+        stroke("black");
+        
+        ellipse(this.grid[a][b].locx + cellWidth, this.grid[a][b].locy + cellHeight, 20, 20);
+
+        await setTimeout(() => {
+            console.log("built");
+            fill(rval);
+            stroke(rval);
+            ellipse(this.grid[a][b].locx + cellWidth, this.grid[a][b].locy + cellHeight, 20, 20);
+        }, 3000);
+
+     
+
+    }
+
 
     build(a, b, rval) {
         if(!this.grid[a][b].build || rval == 255) {
-            fill(rval);
-            let cellWidth = this.width / this.cols / 2;
-            let cellHeight = this.height / this.rows / 2;
-            ellipse(this.grid[a][b].locx + cellWidth, this.grid[a][b].locy + cellHeight, 20, 20);
+           
+            
+            //ellipse(this.grid[a][b].locx + cellWidth, this.grid[a][b].locy + cellHeight, 20, 20);
             if (rval == 255) {
                 this.grid[a][b].build = false;
+                this[this.grid[a][b].type]--;
+                console.log(`BULLDOZED type: ${this.grid[a][b].type} ${this[this.grid[a][b].type]}`);
                 this.grid[a][b].type = null;
             } else {
                 this.grid[a][b].build = true;
                 this.grid[a][b].type = rval;
+                this[rval]++; //increment counter of property type.
+                console.log(`BUILT type: ${rval} ${this[rval]}`);
             }
+            this.buildAnim(a, b, rval);
             // console.log("clicked:", this.grid[a][b].locx, this.grid[a][b].locy, "[" + a + "]", "[" + b + "]" + rval);
         }
     }
@@ -80,7 +107,7 @@ class Grid {
                     if (y > this.grid[a][b].locy && y < this.grid[a][b].locy + (this.height / this.rows) ) {
                         console.log("clicked:", this.grid[a][b].locx, this.grid[a][b].locy, "[" + a + "]", "[" + b + "]" + rval);
                      
-                        stroke(rval);
+                        //stroke(rval);
                       
                         this.build(a, b, rval);
                        return true;
